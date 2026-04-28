@@ -1,13 +1,20 @@
-class Calculator():
-    def add(x, y):
-        print(x + y)
-        return x + y
+class Hero:
+    def __init__(self, name, energy, inventory):
+        self.name = name
+        self.energy = energy
+        self.inventory = inventory
 
-    def add_many(numbers):
-        print(sum(numbers))
-        return sum(numbers)
+    def buy(self, item):
+        self.inventory.append(item)
+        print(self.inventory)
 
-    def subtract(numbers):
-        return numbers
+    def happiness(self):
+        if self.energy > 50:
+            return "Happy"
+        else:
+            return "Sad"
 
-Calculator.add(5, 6)
+
+Player_002 = Hero("Player_002", 25, ["Fists"])
+Player_002.buy({"title": "Chocolate", "energy": 50})
+print(Player_002.__dict__)
