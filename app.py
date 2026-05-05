@@ -1,58 +1,71 @@
-class Hero:
-    def __init__(self, name, energy, inventory, money):
+class Character:
+    def __init__(self, name, energy):
         self.name = name
         self.energy = energy
-        self.inventory = inventory
-        self.bonds = {} 
-        self.money = money 
 
-    def happiness(self):
-        if self.energy > 100:
-            return "Happy"
-        return "Sad"
-
-    def spend(self, amount):
-        if self.money >= amount:
-            self.money -= amount
-            return True
-        else:
-            print(f"Not enough coins! {self.name} only has {self.money}.")
-            return False
-
-    def buy(self, item, cost):
-        print(f"\n{self.name} is trying to buy {item} for {cost} coins...")
-        if self.spend(cost):
-            self.inventory.append(item)
-            print(f"Success! {item} was added to inventory.")
-        else:
-            print(f"Transaction failed.")
-
-    def check_balance(self):
-        print(f"{self.name}'s remaining balance: {self.money} coins")
-
-    def hang_out_with(self, *friends):
-        self.energy += 30
-        for friend in friends:
-            friend.energy += 30
-            self.bonds[friend.name] = self.bonds.get(friend.name, 0) + 40
-            friend.bonds[self.name] = friend.bonds.get(self.name, 0) + 40
-
-    def check_relationship(self, friend):
-        bond = self.bonds.get(friend.name, 0)
-        if bond >= 100:
+    def get_base_stats(self):
+        return f"Name: {self.name} | Energy: {self.energy}"
+    
+class Hero(Character):
+    def __init__(self, name, energy):
+        super().__init__(name, energy)
+        self.bond = 0
+        self.max_energy = 150
+    def check_status(self):
+        if self.bond >= 100:
             return "In Love"
-        elif bond >= 50:
-            return "Friends"
+        elif self.bond >= 50:
+            return "Close Friends"
         return "Acquaintances"
 
-    def status(self):
-        print(f"{self.name} | Energy: {self.energy} | Mood: {self.happiness()} | Bonds: {self.bonds}")
+class Friend(Character):
+    def __init__(self, name, energy, trait):
+        super().__init__(name, energy)
+        self.trait = trait
 
-p002 = Hero("Player_002", 25, ["Fists"], 100)
-p71 = Hero("Player_71", 40, ["Map"], 50)
-p429 = Hero("Player_429", 10, ["Compass"], 10)
+player_name = input("Enter a name: ")
+player = Hero(player_name, 100)
+npc = Friend("Alex", 100, "Kind")
+print(f"Adventure Start: {player.name} is meeting {npc.name} ({npc.trait}).")
 
-p002.buy("Sword", 40)
-p002.check_balance()
-p002.buy("Magic Armor", 200)
-print(f"\n{p002.name}'s final inventory: {p002.inventory}")
+while True:
+    status = player.check_status()
+    print("-" * 40)
+    print(player.get_base_stats())
+    print(f"Bond with {npc.name}: {player.bond} ({status})")
+    print("-" * 40)
+    if player.energy <= 0:
+        print(f"\n{player.name} OVEREXHAUSTION")
+        print("YOU LOSE")
+        break
+    if player.bond >= 100:
+        print(f"\nSuccess! {player.name} and {npc.name} are now {status}!")
+        print("YOU WIN")
+        break
+
+    print("Choose an action:")
+    print("1. Hang out (-25 Energy, +20 Bond)")
+    print("2. Deep Conversation (-40 Energy, +45 Bond)")
+    print("3. Rest (+50 Energy)")
+    print("4. Give up")
+    
+    choice = input("\nAction (1-4): ")
+
+    if choice == "1":
+        player.energy -= 25
+        player.bond += 20
+        print(f"> {player.name} and {npc.name} went for a walk.")
+    elif choice == "2":
+        player.energy -= 40
+        player.bond += 45
+        print(f"> {player.name} shared secrets with {npc.name}.")
+    elif choice == "3":
+        player.energy += 50
+        if player.energy > player.max_energy:
+            player.energy = player.max_energy
+        print(f"> {player.name} took a long nap.")
+    elif choice == "4":
+        print("You Quit")
+        break
+    else:
+        print("Invalid choice. Try again.")
