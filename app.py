@@ -35,11 +35,11 @@ while True:
     print(f"Bond with {npc.name}: {player.bond} ({status})")
     print("-" * 40)
     if player.energy <= 0:
-        print(f"\n{player.name} OVEREXHAUSTION")
+        print(f"{player.name} OVEREXHAUSTION")
         print("YOU LOSE")
         break
     if player.bond >= 100:
-        print(f"\nSuccess! {player.name} and {npc.name} are now {status}!")
+        print(f"Success! {player.name} and {npc.name} are now {status}!")
         print("YOU WIN")
         break
 
@@ -49,7 +49,7 @@ while True:
     print("3. Rest (+50 Energy)")
     print("4. Give up")
     
-    choice = input("\nAction (1-4): ")
+    choice = input("Action (1-4): ")
 
     if choice == "1":
         player.energy -= 25
