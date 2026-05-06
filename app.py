@@ -68,4 +68,4 @@ while True:
         print("You Quit")
         break
     else:
-        print("Invalid choice. Try again.")
+        print("Invalid choice.Choose 1, 2, 3, or 4.")
